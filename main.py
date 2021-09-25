@@ -1,21 +1,32 @@
 import os
+from discord import activity
+from discord.enums import ActivityType
 from dotenv import load_dotenv
 
 import discord
+from discord.ext import commands
 
 load_dotenv()
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.messages = True
+bot = commands.Bot(
+    command_prefix=commands.when_mentioned_or(","),
+    intents=intents,
+    activity=discord.Activity(
+        type=discord.ActivityType.watching, name="you through a window"
+        ),
+    owner_id=355971553500069889
+)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f"running as {client.user}!")
+    print(f"running as {bot.user}!")
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    elif message.content.startswith("!hi"):
-        await message.channel.send(f"gaming with {message.author}")
+@bot.command(
+    name="hi"
+)
+async def hi(ctx):
+    return await ctx.channel.send(f"gaming with {ctx.author}")
 
-client.run(os.getenv("TOKEN"))
+bot.run(os.getenv("TOKEN"))
