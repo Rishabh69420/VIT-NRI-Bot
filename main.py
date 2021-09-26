@@ -1,5 +1,5 @@
 import os
-from discord import activity
+from discord import activity, channel
 from discord.enums import ActivityType
 from dotenv import load_dotenv
 
@@ -27,6 +27,6 @@ async def on_ready():
     name="hi"
 )
 async def hi(ctx):
-    return await ctx.channel.send(f"gaming with {ctx.author}")
+    return await ctx.channel.send(f"gaming with {ctx.author.mention}")
 
 bot.run(os.getenv("TOKEN"))
